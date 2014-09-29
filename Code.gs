@@ -1,19 +1,23 @@
-// * don't include all-day events
-// * recognize overlapping events?
-// * find tagging for R+D hours
+// 1. change calname
+// 2. change yourname
+// 3. change year
+// 4. compute with RUN > calculate_timesheet
+// 5. go back to the spreadsheet and look at the resultss
+// 6. if projects haven't been named/grouped properly, edit the mapProject() function
 
 
 // name of the calendar
 var calname = "DTLJ_hours_eva";
+// var calname = "DTLJ_hours_mouna";
 
-// name of person (it'll be printed in a column)
+// name of person (it'll be printed in a column, and be included in the sheet-name)
 var yourname = "Eva";
 
 // specify calendar year you want to compute
 var year = 2014;
 
 var company = "DAILY TOUS LES JOURS";
-var company_short = "DTLJ";
+var company_short = "DTLJ";//
 
 
 /*
@@ -25,7 +29,7 @@ function calculate_timesheet(){
   // MOST IMPORTANT = GET ACCESS TO CALENDAR
 
   // alternative 1: 
-  // get calendar by name
+  // get calendar by name, you gmail account needs to have/give access to the calendar
   var calendars = CalendarApp.getCalendarsByName(calname);
   Logger.log('Found %s matching calendars.', calendars.length);
   var cal = calendars[0];
@@ -48,9 +52,9 @@ function calculate_timesheet(){
   // the timesheet will be inserted into the active spreadsheet
   // it will create (or overwrite) a sheet with the name of the calendar year
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(yearStr);
+  var sheet = ss.getSheetByName(yourname+"_"+yearStr);
   if (sheet == null) {
-    sheet = ss.insertSheet(yearStr);
+    sheet = ss.insertSheet(yourname+"_"+yearStr);
   } else {
     sheet.clearContents(); 
   }
@@ -93,10 +97,8 @@ function calculate_timesheet(){
   for (p=0;p<allProjects.length;p++) {
     var range = sheet.getRange(4,10+p,1,1);
     var letter = String.fromCharCode(p+10 + 65-1);
-    //range.setFormula('=SUM(G8:G1000)');
     range.setFormula('=SUM('+letter+'8:'+letter+'1000)');
   }
-  
   
   // Create the header
   var header = [["Wk","Name","Log description","General Task", "Date", "Project", "Total Hours", "Weekly Total", ""]]
@@ -152,7 +154,7 @@ function calculate_timesheet(){
         // write old week sum
         if (newWeek != "") {
           var sumCell=sheet.getRange(row-1,8,1,1);
-          sumCell.setValue(sumWeek);
+          sumCell.setValue(sumWeek.toFixed(2));
         }
         sumWeek = 0;
         newWeek = weekno;
@@ -162,7 +164,7 @@ function calculate_timesheet(){
       row=i+off;
       
       // write out event details
-      var details=[[writeWeek, yourname,description, "", new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate()), project,  duration]];
+      var details=[[writeWeek, yourname,description, "", new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate()), project,  duration.toFixed(2)]];
       var range=sheet.getRange(row,1,1,7);
       range.setValues(details);
       var fontStyles = [[ "bold","normal","normal","normal","normal","normal","bold" ]];
@@ -174,7 +176,7 @@ function calculate_timesheet(){
       for (p=0;p<allProjects.length;p++) {
         if (project == allProjects[p]) {
           var projectCell = sheet.getRange(row, 10+p, 1,1);
-          projectCell.setValue(duration);
+          projectCell.setValue(duration.toFixed(2));
         }
       }
     
@@ -184,72 +186,69 @@ function calculate_timesheet(){
   // write week number
   if (newWeek != "") {
     var sumCell=sheet.getRange(row,8,1,1);
-    sumCell.setValue(sumWeek);
+    sumCell.setValue(sumWeek.toFixed(2));
     sumCell.setFontWeight("bold");
   }
 }
 
+
 /*
- * To cleanup / refine project names, if needed
- *
+ * clean-up of project names
+ * if you ended up using different naming-conventions
+ * for projects, but still want to group the hours together
+ * 
  */
 function mapProject( p ) {
-
+  // get rid of whitespace characters before and after
   p = p.trim();
   p = p.toUpperCase(); 
-
-  if (p == "UNIOND") {
-    return "UD";
+  
+  switch (p) {
+      
+    case "UNIOND":  
+    case "UNION DEPOT":
+      return "UD";
+      
+    case "IT":
+      return "ITM";
+      
+    case "R+D":
+    case "DAILY":
+    case "OFFICE":
+    case "KICKSTART":
+      return company_short;
+      
+    case "21 O":
+      return "21O";
+      
+    case "TURLUTTE":
+      return "TURLUTE";
+      
+    case "SDCV":
+      return "MEMORAMA";
+      
+    case "PLANETARIUM":
+      return "PLANE";
+      
+    case "1%":
+      return "ONE%";
+      
+    case "NFB":
+    case "MCLAREN":
+    case "MCLARENA":
+      return "MCL";
+      
+    case "T-A-D":
+      return "TAD";
   }
-  if (p == "UNION DEPOT") {
-    return "UD";
-  }
-  else if (p == "R+D") {
-    return "DTLJ";
-  }
-  else if (p == "21 O") {
-    return "21O";
-  }
-  else if (p == "TURLUTTE") {
-    return "TURLUTE";
-  }
-  else if (p == "SDCV") {
-    return "MEMORAMA";
-  }
-  else if (p == "PLANETARIUM") {
-    return "PLANE";
-  }
-  else if (p == "DAILY") {
-    return "DTLJ";
-  }
-  else if (p == "OFFICE") {
-    return "DTLJ";
-  }
-  else if (p == "KICKSTART") {
-    return "DTLJ";
-  }
-  else if (p == "1%") {
-    return "ONE%";
-  }
-  else if (p == "NFB") {
-    return "MCL";
-  }
-  else if (p == "MCLAREN") {
-    return "MCL";
-  }
-  else if (p == "MCLARENA") {
-    return "MCL";
-  }
-  else if (p == "T-A-D") {
-    return "TAD";
-  }
-  else return p;
+  
+  return p;
 }
 
 
 /*
- * To cleanup / refine project names, if needed
- *
+ * define the week number
+ * 
  */
 function getWeek( d ){ 
   var onejan = new Date(d.getFullYear(),0,1); 
@@ -257,7 +256,6 @@ function getWeek( d ){
 } 
 
 
-//function onOpen() {
-//  Browser.msgBox('App Instructions - Please Read This Message', '1) Click Tools then Script Editor\\n2) Read/update the code with your desired values.\\n3) Then when ready click Run export_gcal_to_gsheet from the script editor.', Browser.Buttons.OK);
-//
-//}
+function onOpen() {
+  Browser.msgBox('Time to crunch numbers!', '1) Go to the script via TOOLS > Script Editor\\n2) Change the calendar-name, person-name and calendar year\\n3) Then when ready click RUN > calculate_timesheet', Browser.Buttons.OK);
+}
