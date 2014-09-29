@@ -69,6 +69,10 @@ function calculate_timesheet(){
   var range = sheet.getRange(4,7,1,1);
   range.setFormula('=SUM(G8:G1000)');
   
+  var project_head = sheet.getRange(1,10,3,1);
+  project_head.setValues([["PROJECTS"],[ ""],[ "INDIVIDUAL PROJECT HOURS"]]);
+  project_head.setFontWeight("bold");
+  
 
 
   // array to collect all project names
@@ -97,11 +101,11 @@ function calculate_timesheet(){
   for (p=0;p<allProjects.length;p++) {
     var range = sheet.getRange(4,10+p,1,1);
     var letter = String.fromCharCode(p+10 + 65-1);
-    range.setFormula('=SUM('+letter+'8:'+letter+'1000)');
+    range.setFormula('=SUM('+letter+'8:'+letter+'10000)');
   }
   
   // Create the header
-  var header = [["Wk","Name","Log description","General Task", "Date", "Project", "Total Hours", "Weekly Total", ""]]
+  var header = [["Wk","Name","Log description","(Category)", "Date", "Project", "Total Hours", "Weekly Total", ""]]
   var range = sheet.getRange(5,1,1,9);
   range.setValues(header);
   range.setFontWeight("bold");
@@ -255,7 +259,11 @@ function getWeek( d ){
   return Math.ceil((((d - onejan) / 86400000) + onejan.getDay()+1)/7); 
 } 
 
-
+/*
+ * some info that pops up when opening the spreadsheet 
+ * connected to the gscript
+ * 
+ */
 function onOpen() {
   Browser.msgBox('Time to crunch numbers!', '1) Go to the script via TOOLS > Script Editor\\n2) Change the calendar-name, person-name and calendar year\\n3) Then when ready click RUN > calculate_timesheet', Browser.Buttons.OK);
 }
