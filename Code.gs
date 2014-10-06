@@ -9,12 +9,22 @@
 // name of the calendar
 // var calname = "DTLJ_hours_eva";
 // var calname = "DTLJ_hours_mouna";
-var calname = "DTLJ_hours_pierre";
+// var calname = "DTLJ_hours_pierre";
+var calname = "DTLJ_hours_anne";
+// var calname = "DTLJ_hours_michael";
+// var calname = "DTLJ_hours_mylene";
+// var calname = "DTLJ_hours_mel";
+// var calname = "DTLJ_hours_val";
 
 // name of person (it'll be printed in a column, and be included in the sheet-name)
 // var yourname = "Eva";
 // var yourname = "Mouna";
-var yourname = "Pierre";
+// var yourname = "Pierre";
+var yourname = "Anne";
+// var yourname = "Michael";
+// var yourname = "Mylene";
+// var yourname = "Mel";
+// var yourname = "Val";
 
 // specify calendar year you want to compute
 var year = 2014;
@@ -85,7 +95,7 @@ function calculate_timesheet(){
   // reminder, project names are placed between [] square brackets!
   for (var i=0;i<events.length;i++) {
 
-    var eventText = events[i].getTitle();
+    var eventText = events[i].getTitle().trim();
     var splitText = eventText.split("]"); 
     var project = "-";
     
