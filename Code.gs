@@ -1,9 +1,23 @@
-// 1. change calname
-// 2. change yourname
-// 3. change year
-// 4. compute with RUN > calculate_timesheet
-// 5. go back to the spreadsheet and look at the resultss
-// 6. if projects haven't been named/grouped properly, edit the mapProject() function
+/*
+ * Create timesheets from your google-calendar events
+ *
+ * for details see:
+ * https://github.com/dailyTLJ/gcal-timesheet
+ *
+ *
+ * script based on http://blog.cloudbakers.com/blog/export-google-calendar-entries-to-a-google-spreadsheet
+ *
+ *
+ * STEPS:
+ * 1. change calname
+ * 2. change yourname
+ * 3. change year
+ * 4. compute with RUN > calculate_timesheet
+ * 5. go back to the spreadsheet and look at the resultss
+ * 6. if projects haven't been named/grouped properly, edit the mapProject() function
+ *
+ */
+ 
 
 
 // name of the calendar
@@ -273,13 +287,20 @@ function getWeek( d ){
 } 
 
 
+/*
+ * convert number to col name
+ * with a offset of 10 cols
+ * 0 > J, 17 > AA
+ *
+ */
 function numToCol( p ){
+  var offset = 10;
   if (p<17) {
-    // return String.fromCharCode(p+10 + 65-1);
-    return String.fromCharCode(p+10+64);
+    // return String.fromCharCode(p+offset + 65-1);
+    return String.fromCharCode(p+offset+64);
   } else {
-    var firstChar = String.fromCharCode( Math.floor((p+10)/26) +64 );
-    var secondChar = String.fromCharCode( (p+10)%26 + 64 );
+    var firstChar = String.fromCharCode( Math.floor((p+offset)/26) +64 );
+    var secondChar = String.fromCharCode( (p+offset)%26 + 64 );
     return firstChar+''+secondChar;
   }
 }

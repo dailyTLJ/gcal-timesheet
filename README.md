@@ -39,3 +39,7 @@ Helpful tips and tricks
 * Use your calendar for future-event planning as well (instead of doing that in another calendar), that way you save some time
 * The script can't change the width of your columns, but the good thing is, once you layout your columns and rows to your liking, it will keep that layout even when you rerun the script
 * Always look at your weekly hours sumup first, to see if the numbers make sense. If these numbers are too high, check if you don't have overlapping event blocks
+
+
+
+This script is based on one by Justin Gale, see http://blog.cloudbakers.com/blog/export-google-calendar-entries-to-a-google-spreadsheet. 
