@@ -1,6 +1,6 @@
 How to create timesheets from your google-calendar events
 ====
-After battling the painful timesheet hours-entry in basecamp for too long, we decided to jump ship and use a combination of google calendar and google script instead. 
+After battling the painful timesheet hours-entry in basecamp for too long, we decided to jump ship and use a combination of google calendar and google script instead. The google app script we now use, takes the events in your google calendar, parses their event name to extract the project name, lists all events in a spreadsheet and sums up your workhours per week and per project. 
 
 
 
@@ -28,7 +28,7 @@ How to compile your timesheet
 6. Go back to the spreadsheet, select the correct sheet and verify the results
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/dailyTLJ/gcal-timesheet/master/calendar2.png"/>
+	<img src="https://raw.githubusercontent.com/dailyTLJ/gcal-timesheet/master/spreadsheet.png"/>
 </p>
 
 
