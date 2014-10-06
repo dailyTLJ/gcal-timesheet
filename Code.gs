@@ -7,11 +7,14 @@
 
 
 // name of the calendar
-var calname = "DTLJ_hours_eva";
+// var calname = "DTLJ_hours_eva";
 // var calname = "DTLJ_hours_mouna";
+var calname = "DTLJ_hours_pierre";
 
 // name of person (it'll be printed in a column, and be included in the sheet-name)
-var yourname = "Eva";
+// var yourname = "Eva";
+// var yourname = "Mouna";
+var yourname = "Pierre";
 
 // specify calendar year you want to compute
 var year = 2014;
@@ -100,7 +103,7 @@ function calculate_timesheet(){
   // summing up of each project's hours
   for (p=0;p<allProjects.length;p++) {
     var range = sheet.getRange(4,10+p,1,1);
-    var letter = String.fromCharCode(p+10 + 65-1);
+    var letter = numToCol(p);
     range.setFormula('=SUM('+letter+'8:'+letter+'10000)');
   }
   
@@ -258,6 +261,19 @@ function getWeek( d ){
   var onejan = new Date(d.getFullYear(),0,1); 
   return Math.ceil((((d - onejan) / 86400000) + onejan.getDay()+1)/7); 
 } 
+
+
+function numToCol( p ){
+  if (p<17) {
+    // return String.fromCharCode(p+10 + 65-1);
+    return String.fromCharCode(p+10+64);
+  } else {
+    var firstChar = String.fromCharCode( Math.floor((p+10)/26) +64 );
+    var secondChar = String.fromCharCode( (p+10)%26 + 64 );
+    return firstChar+''+secondChar;
+  }
+}
+
 
 /*
  * some info that pops up when opening the spreadsheet 
